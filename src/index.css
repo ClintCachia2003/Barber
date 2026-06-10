@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #0A0907;
+  --color-surface: #141210;
+  --color-surface-2: #1C1917;
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8C878;
+  --color-gold-dim: rgba(201, 168, 76, 0.15);
+  --color-text: #F5F0E8;
+  --color-text-muted: #9E8F7A;
+  --color-border: rgba(201, 168, 76, 0.18);
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Jost', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-gold); border-radius: 3px; }
+
+/* Selection */
+::selection { background: rgba(201, 168, 76, 0.25); color: var(--color-text); }
+
+/* Gold shimmer text */
+.text-gold-shimmer {
+  background: linear-gradient(90deg, #B45309 0%, #F59E0B 30%, #E8C878 50%, #F59E0B 70%, #B45309 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(28, 25, 23, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+}
+
+/* Gold border glow on hover */
+.gold-glow-hover {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.gold-glow-hover:hover {
+  box-shadow: 0 0 24px rgba(201, 168, 76, 0.2), inset 0 0 24px rgba(201, 168, 76, 0.05);
+  border-color: rgba(201, 168, 76, 0.5);
+}
+
+/* Section fade-in via Intersection Observer */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@layer utilities {
+  .font-serif { font-family: 'Bodoni Moda', Georgia, serif; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
